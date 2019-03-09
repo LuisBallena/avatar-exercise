@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="css/bootstrap.css" rel="stylesheet"/>
+    <link href="css/jstand.css" rel="stylesheet"/>
+</head>
+<body>
+
+<div id="app">
+    <router-view></router-view>
+
+</div>
+
+<template id="person-list">
+    <div class="container">
+        <h2>Avatar</h2>
+
+        <router-link class="btn btn-primary" v-bind:to="{path: '/add-person'}">
+            <span class="glyphicon glyphicon-plus"></span>
+            Add Person
+        </router-link>
+
+        </button>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Height</th>
+                <th>Mass</th>
+                <th>Hair Color</th>
+                <th>Gender</th>
+                <th>Planet</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="person in people">
+                <td>{{ person.id }}</td>
+                <td>{{ person.name }}</td>
+                <td>{{ person.height }}</td>
+                <td>{{ person.mass }}</td>
+                <td>{{ person.hairColor }}</td>
+                <td>{{ person.gender }}</td>
+                <td>{{ person.planet }}</td>
+                <td>
+                    <router-link class="btn btn-warning btn-xs"
+                            v-bind:to="{name: 'person-update', params: {person_id: person.id}}">Edit
+                    </router-link>
+                    <router-link class="btn btn-danger btn-xs"
+                                 v-bind:to="{name: 'person-delete', params: {person_id: person.id}}">Delete
+                    </router-link>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</template>
+
+<template id="add-person">
+    <div class="row">
+        <form  class="col-lg-6 col-md-offset-3" v-on:submit="createPerson">
+            <h2 >Add person</h2>
+            <ul>
+                <li style="color: red;" v-for="error in errors">
+                    {{ error }}
+                </li>
+            </ul>
+            <div class="form-row col-lg-12">
+                <div class="form-group col-lg-12">
+                    <label for="add-name">Name:</label>
+                    <input class="form-control" id="add-name" v-model="person.name" required/>
+                </div>
+            </div>
+
+            <div class="form-row col-lg-12">
+                <div class="form-group col-lg-12">
+                    <label  for="add-height">Height:</label>
+                    <input class="form-control " id="add-height" v-model="person.height" />
+
+                </div>
+            </div>
+            <div class="form-row col-lg-12">
+                <div class="form-group col-lg-12">
+                    <label for="add-mass">Mass:</label>
+                    <input class="form-control" id="add-mass" v-model="person.mass" />
+                </div>
+            </div>
+            <div class="form-row col-lg-12">
+                <div class="form-group col-lg-12">
+                    <label for="add-hair">Hair color:</label>
+                    <select class="form-control" id="add-hair" v-model="person.hairColor">
+                        <option value="black">black</option>
+                        <option value="blond">blond</option>
+                        <option value="brown">brown</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row col-lg-12">
+                <div class="form-group col-lg-12">
+                    <label for="add-planet">Planet:</label>
+                    <input class="form-control" id="add-planet" v-model="person.planet" required/>
+                </div>
+            </div>
+            <div class="form-row col-lg-12">
+                <div class="form-group col-lg-12">
+                    <label for="add-planet">Gender:</label>
+                    <select class="form-control" id="add-gender" v-model="person.gender" required>
+                        <option value="MALE">MALE</option>
+                        <option value="FEMALE">FEMALE</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row col-lg-12">
+                <div class="form-group col-lg-12">
+                    <button type="submit" class="btn btn-primary">Create</button>
+                    <router-link class="btn btn-default" v-bind:to="'/'">Cancel</router-link>
+                </div>
+            </div>
+        </form>
+    </div>
+</template>
+
+<template id="update-person">
+    <div class="row">
+        <form  class="col-lg-6 col-md-offset-3" v-on:submit="updatePerson">
+            <h2 >Update person</h2>
+            <ul>
+                <li style="color: red;" v-for="error in errors">
+                    {{ error }}
+                </li>
+            </ul>
+            <div class="form-row col-lg-12">
+                <div class="form-group col-lg-12">
+                    <label for="add-name">Name:</label>
+                    <input class="form-control" id="add-name" v-model="person.name" required/>
+                </div>
+            </div>
+
+            <div class="form-row col-lg-12">
+                <div class="form-group col-lg-12">
+                    <label  for="add-height">Height:</label>
+                    <input class="form-control " id="add-height" v-model="person.height" />
+
+                </div>
+            </div>
+            <div class="form-row col-lg-12">
+                <div class="form-group col-lg-12">
+                    <label for="add-mass">Mass:</label>
+                    <input class="form-control" id="add-mass" v-model="person.mass" />
+                </div>
+            </div>
+            <div class="form-row col-lg-12">
+                <div class="form-group col-lg-12">
+                    <label for="add-hair">Hair color:</label>
+                    <select class="form-control" id="add-hair" v-model="person.hairColor">
+                        <option value="black">black</option>
+                        <option value="blond">blond</option>
+                        <option value="brown">brown</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row col-lg-12">
+                <div class="form-group col-lg-12">
+                    <label for="add-planet">Planet:</label>
+                    <input class="form-control" id="add-planet" v-model="person.planet" required/>
+                </div>
+            </div>
+            <div class="form-row col-lg-12">
+                <div class="form-group col-lg-12">
+                    <label for="add-planet">Gender:</label>
+                    <select class="form-control" id="add-gender" v-model="person.gender" required>
+                        <option value="MALE">MALE</option>
+                        <option value="FEMALE">FEMALE</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row col-lg-12">
+                <div class="form-group col-lg-12">
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    <router-link class="btn btn-default" v-bind:to="'/'">Cancel</router-link>
+                </div>
+            </div>
+        </form>
+    </div>
+</template>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jstand_modal.js"></script>
+<script src="js/vue.js"></script>
+<script src="js/vue-router.js"></script>
+<script src="js/vue-resource.js"></script>
+<script type="text/javascript">
+
+    var personList = Vue.extend({
+        template: '#person-list',
+        data: function () {
+            return {people: null};
+        },
+        created() {
+            this.listPerson();
+        },
+        methods: {
+            listPerson: function(){
+                this.$http.get('http://ec2-18-228-192-171.sa-east-1.compute.amazonaws.com:8080/persona')
+                    .then(
+                        response => {
+                    console.log(response);
+                this.people = response.body
+                }, response => {
+                    console.log(response);
+                });
+            }
+        }
+    });
+
+    var addPerson = Vue.extend({
+        template: '#add-person',
+        data: function () {
+            return {person: {name: '', planet: '', gender: '', height:'', mass:'', hairColor:''},
+                errors: []}
+        },
+        methods: {
+            createPerson: function (event) {
+                event.preventDefault();
+                openAjaxStatus();
+                this.errors = [];
+
+                this.$http.post('http://ec2-18-228-192-171.sa-east-1.compute.amazonaws.com:8080/persona',this.person)
+                    .then(
+                        response => {
+                            closeAjaxStatus();
+                            router.push('/');
+                    }, response => {
+                            console.log(response);
+                            this.errors.push(parseMessage(response));
+                            closeAjaxStatus();
+                });
+            }
+        }
+    });
+
+    var updatePerson = Vue.extend({
+        template: '#update-person',
+        data: function () {
+            return {person: {name: '', planet: '', gender: '', height:'', mass:'', hairColor:''},
+                errors: [], id : this.$route.params.person_id}
+        },
+        mounted(){
+            this.findPerson();
+        },
+        methods: {
+            findPerson: function(){
+                openAjaxStatus();
+                var resource = this.$resource('http://ec2-18-228-192-171.sa-east-1.compute.amazonaws.com:8080/persona{/id}');
+                var idGet = this.id;
+                resource.get({id: idGet}).then(response => {
+                    this.person = response.body;
+                    closeAjaxStatus();
+                }, response => {
+                    console.log(response);
+                    closeAjaxStatus();
+                });
+            },
+            updatePerson: function (event) {
+                event.preventDefault();
+                openAjaxStatus();
+                this.errors = [];
+                var url = 'http://ec2-18-228-192-171.sa-east-1.compute.amazonaws.com:8080/persona/'+this.id;
+                this.$http.put(url,this.person).then(response => {
+                    closeAjaxStatus();
+                    router.push('/');
+                }, response => {
+                    console.log(response);
+                    this.errors.push(parseMessage(response));
+                    closeAjaxStatus();
+                });
+            }
+        }
+    });
+
+    var deletePerson = Vue.extend({
+        data: function () {
+            return {id: this.$route.params.person_id};
+        },
+        mounted() {
+            this.deletePerson();
+        },
+        methods: {
+            deletePerson: function () {
+                var idDelete = this.id;
+                var resource = this.$resource('http://ec2-18-228-192-171.sa-east-1.compute.amazonaws.com:8080/persona{/id}');
+                openAjaxStatus();
+                resource.remove({id: idDelete}).then(response => {
+                    closeAjaxStatus();
+                    router.push('/');
+            }, response => {
+                    closeAjaxStatus();
+                    console.log(response);
+                    router.push('/');
+                });
+            }
+        }
+    });
+
+    function parseMessage(response){
+        var message = "";
+        var status = response.status;
+        var bodyResponse = response.body;
+        message = bodyResponse['error_message'];
+        if(status == 400 && message == null){
+            message = "Uno de los parámetros enviados no cumple su tipo de estructura requerida"
+        }
+        return message;
+    }
+
+
+    //definiendo routers
+    var router = new VueRouter({
+        routes: [
+            {path: '/', component: personList},
+            {path: '/add-person', component: addPerson},
+            {path: '/delete-person', component: deletePerson, name: 'person-delete'},
+            {path: '/update-person', component: updatePerson, name: 'person-update'},
+        ]
+    });
+
+
+    var app = new Vue({
+        el: '#app',
+        router: router
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+server:
+  port: 8080
+
+spring:
+  jackson:
+    default-property-inclusion: non_null
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: "jdbc:mysql://172.31.15.111:3306/avatar?autoreconnect=true"
+    username: "root"
+    password: "admin"
+
+logging:
+    config: classpath:logging/logback.xml
+
+api:
+  external:
+    swapi:
+      url: https://swapi.co/api/planets/
+
